@@ -1,17 +1,17 @@
-FROM node:10-alpine as build-step
+FROM node:12.18.2 as build
 
-RUN mkdir /app
+ARG REACT_APP_SERVICES_HOST=/services/m
 
-FROM node:14.9
- 
-WORKDIR /usr/src/app
- 
-COPY package*.json ./
- 
+WORKDIR /app
+
+COPY ./package.json /app/package.json
+COPY ./package-lock.json /app/package-lock.json
+
 RUN npm install
- 
 COPY . .
- 
-EXPOSE 3000
- 
-CMD [ "npm", "start" ]
+RUN npm build .
+
+
+FROM nginx
+COPY ./public/index.html /usr/share/nginx/html/index.html
+COPY --from=build /app/build /usr/share/nginx/html

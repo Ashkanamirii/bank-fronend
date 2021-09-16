@@ -78,6 +78,8 @@ const registerNewUserToDB = async (regUser) => {
   createNewAccountToDB(accountInfo)
 }
 
+
+
 const createNewAccountToDB = async (accountInfo) => {
   const newAcc = await createNewAccount(accountInfo)
 
