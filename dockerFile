@@ -1,17 +1,21 @@
-FROM node:12.18.2 as build
+FROM node:lts AS development
 
-ARG REACT_APP_SERVICES_HOST=/services/m
+WORKDIR /code
+COPY package.json /code/package.json
+COPY package-lock.json /code/package-lock.json
 
-WORKDIR /app
+RUN npm ci
+COPY . /code
 
-COPY ./package.json /app/package.json
-COPY ./package-lock.json /app/package-lock.json
+ENV CI=true
+ENV PORT=3000
 
-RUN npm install
-COPY . .
-RUN npm build .
+CMD [ "npm", "production" ]
 
+FROM development AS build
 
-FROM nginx
-COPY ./public/index.html /usr/share/nginx/html/index.html
-COPY --from=build /app/build /usr/share/nginx/html
+RUN npm run build
+
+FROM nginx:1.13-alpine
+
+COPY --from=build /code/build /usr/share/nginx/html

@@ -5,7 +5,8 @@
   "scripts": {
     "buildcss": "postcss dist/tailwind.css -o public/style.css",
     "dev": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "production": "cross-env NODE_ENV=production postcss dist/tailwind.css -o public/style.css"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +14,8 @@
   "dependencies": {
     "autoprefixer": "^10.3.2",
     "axios": "^0.21.4",
-    "postcss": "^8.3.6",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.3.8",
     "postcss-cli": "^8.3.1",
     "sweetalert2": "^11.1.4",
     "tailwindcss": "^2.2.7"
